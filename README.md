@@ -35,6 +35,38 @@ pdftoc input.pdf --preview        # print detected TOC to stdout, don't write
 pdftoc input.pdf --max-level 2    # only level 1-2 headings
 pdftoc input.pdf --replace        # overwrite input file in place
 pdftoc input.pdf --debug          # show font histogram + detection details
+pdftoc input.pdf --edit           # edit detected TOC in $EDITOR before writing
+pdftoc input.pdf --toc toc.txt    # import TOC from a text file
+```
+
+## Manual editing
+
+When the auto-detected TOC isn't quite right, you can manually edit it. Two workflows:
+
+**Interactive editing** — review and tweak in your editor:
+
+```sh
+pdftoc input.pdf --edit
+```
+
+This auto-detects headings, opens them in `$EDITOR` (default: `vi`), and writes bookmarks from your saved edits. Delete all lines to abort.
+
+**File-based editing** — export, edit offline, then import:
+
+```sh
+pdftoc input.pdf --preview > toc.txt
+# edit toc.txt (add, remove, reorder, re-indent headings)
+pdftoc input.pdf --toc toc.txt -o output.pdf
+```
+
+The TOC format uses 2-space indentation per level with a `(p. N)` page suffix:
+
+```
+Chapter 1  (p. 1)
+  Section 1.1  (p. 3)
+    Subsection 1.1.1  (p. 5)
+  Section 1.2  (p. 10)
+Chapter 2  (p. 15)
 ```
 
 ## Development
